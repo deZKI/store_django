@@ -1,0 +1,181 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load cache %}
+{% block content %}
+    <main class="main">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav" style="border-top: none">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'games:catalog' %}">Каталог</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ game.name }}</li>
+                </ol>
+            </nav>
+            <div class="product-single-container product-single-default">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="product-single-gallery">
+                            <div class="product-slider-container product-item">
+                                <div class="product-single-carousel owl-carousel owl-theme">
+                                    <div class="product-item">
+                                        <img class="product-single-image" src={{ object.main_image.url }}/>
+                                    </div>
+                                    {% for image in game.images.all %}
+                                        <div class="product-item">
+                                            <img class="product-single-image" src={{ image.image.url }}/>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- End .product-single-carousel -->
+                                <span class="prod-full-screen">
+                                        <i class="icon-plus"></i>
+                                    </span>
+                            </div>
+                            <div class="prod-thumbnail row owl-dots" id='carousel-custom-dots'>
+                                <div class="col-3 owl-dot">
+                                    <img class="product-single-image" src={{ object.main_image.url }}/>
+                                </div>
+                                {% for image in object.images.all %}
+                                    <div class="col-3 owl-dot">
+                                        <img class="product-single-image" src={{ image.image.url }}/>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div><!-- End .product-single-gallery -->
+                    </div><!-- End .col-lg-7 -->
+
+
+                    <div class="col-lg-7 col-md-6">
+                        <div class="product-single-details">
+                            <h1 class="product-title">{{ object.name }}</h1>
+
+                            <div class="ratings-container">
+                                {% include 'games/raiting.html' %}
+
+                                {% if user.is_authenticated %}
+                                    <h5 class="card-title">Ваша оценка:
+                                        <div class="card-edit">
+                                            <ul class="btn btn-grey list-inline rating-list">
+                                                <li onclick="rate.call(this, '5', {{ object.id }})">
+                                                    <i class="fa fa-star {% if user_rating.rating > 4 %} checked {% endif %}"
+                                                       title="Rate 5"></i></li>
+                                                <li onclick="rate.call(this, '4', {{ object.id }})">
+                                                    <i class="fa fa-star {% if user_rating.rating > 3 %} checked {% endif %}"
+                                                       title="Rate 4"></i></li>
+                                                <li onclick="rate.call(this, '3', {{ object.id }})">
+                                                    <i class="fa fa-star {% if user_rating.rating > 2 %} checked {% endif %}"
+                                                       title="Rate 3"></i></li>
+                                                <li onclick="rate.call(this,'2', {{ object.id }})">
+                                                    <i class="fa fa-star {% if user_rating.rating > 1 %} checked {% endif %}"
+                                                       title="Rate 2"></i></li>
+                                                <li onclick="rate.call(this, '1', {{ object.id }})">
+                                                    <i class="fa fa-star {% if user_rating.rating > 0 %} checked {% endif %}"
+                                                       title="Rate 1"></i></li>
+                                            </ul>
+                                        </div>
+                                    </h5>
+                                {% endif %}
+                            </div><!-- End .product-container -->
+
+                            <div class="price-box">
+                                <span class="product-price">{{ object.price }} руб.</span>
+                            </div><!-- End .price-box -->
+
+                            <div class="product-info-box">
+                                <span class="product-info">Осталось: {{ object.quantity }}</span>
+                            </div>
+                            <div class="product-desc">
+                                <p>{{ object.description }}</p>
+                            </div><!-- End .product-desc -->
+
+                            <div class="product-info-box">
+                                <div class="product-info-date">
+                                    <span class="product-info-name">Дата выхода:</span>
+                                    <span class="product-info">{{ object.release_date }}</span>
+                                </div>
+                                <div class="product-info-developer">
+                                    <span class="product-info-name">Разработчик:</span>
+                                    <span class="product-info">{{ object.developer }}</span>
+                                </div>
+                                <div class="product-info-publisher">
+                                    <span class="product-info-name">Издатель:</span>
+                                    <span class="product-info">{{ object.publisher }}</span>
+                                </div>
+                                <div class="product-info-category">
+                                    <span class="product-info-name">Теги:</span>
+                                    {% for tag in object.tags.all %}
+                                        <a href="{% url 'games:catalog' %}?tags={{ tag.slug }}"> <span
+                                                class="product-info"> {{ tag.name }} </span> </a>
+                                    {% endfor %}
+                                </div>
+                                <div class="product-info-category">
+                                    <span class="product-info-name">Жанры:</span>
+                                    {% for genre in object.genres.all %}
+                                        <a href="{% url 'games:catalog' %}?genres={{ genre.slug }}"> <span
+                                                class="product-info">{{ genre.name }}</span> </a>
+                                    {% endfor %}
+                                </div>
+                                <div class="product-info-rate">
+                                    <span class="product-info-name">Возрастной рейтинг:</span>
+                                    <span class="product-info-ratenum">{{ object.get_age_limit_display }}</span>
+                                    <span class="product-info">{{ object.age_limit }}</span>
+                                </div>
+                            </div>
+
+                            <div class="product-action product-all-icons">
+                                <button class="paction add-cart" onclick="apiBasketAdd.call(this, {{ object.id }})" title="Add to Cart" >
+                                    Добавить в корзину
+                                </button>
+                                </a>
+                            </div><!-- End .product-action -->
+                            <div class="share-social">
+                                <h3>Поделиться в социальных сетях:</h3>
+                                <a href="http://vk.com/share.php?url=http://127.0.0.1:8000{% url 'games:game' object.slug %}"
+                                   target="_blank" rel="nofollow">
+                                    <img src="{% static 'assets/images/logos/vk.png' %}" style="max-width: 30px">
+                                </a>
+                            </div>
+                        </div><!-- End .product-single-details -->
+                    </div><!-- End .col-lg-7 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-single-container -->
+
+            <div class="product-single-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-tab-reviews" data-toggle="tab" href="#product-reviews-content"
+                           role="tab" aria-controls="product-reviews-content" aria-selected="false">Комментарии</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade" id="product-reviews-content" role="tabpanel"
+                         aria-labelledby="product-tab-reviews">
+                        <div class="product-reviews-content">
+                            <div class="collateral-box">
+                                <ul>
+                                    <li>Be the first to review this product</li>
+                                </ul>
+                            </div><!-- End .collateral-box -->
+
+                            <div class="add-product-review">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group mb-2">
+                                        <label>Что вы думаете об игре? <span class="required">*</span></label>
+                                        <textarea cols="5" rows="6" class="form-control form-control-sm"></textarea>
+                                    </div><!-- End .form-group -->
+
+                                    <input type="submit" class="btn btn-primary" value="Оставить мнение">
+                                </form>
+                            </div><!-- End .add-product-review -->
+                        </div><!-- End .product-reviews-content -->
+                    </div><!-- End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-single-tabs -->
+
+        </div><!-- End .container -->
+
+
+    </main><!-- End .main -->
+{% endblock %}

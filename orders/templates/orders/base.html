@@ -1,0 +1,14 @@
+{% extends 'games/base.html' %}
+{% block content %}
+    <main class="main mb-4">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Создание заказа</li>
+                </ol>
+            </nav>
+        {% block order_content %}
+        {% endblock %}
+    </main><!-- End .main -->
+{% endblock %}

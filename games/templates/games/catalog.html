@@ -1,0 +1,138 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load cache %}
+{% block content %}
+    <main class="main">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Каталог</li>
+                </ol>
+            </nav>
+            <div class="row">
+                <div class="col-lg-9">
+                    <nav class="toolbox">
+                        <div class="toolbox-left">
+                            <div class="toolbox-item toolbox-sort">
+                                <div class="select-custom">
+                                                                    <select name="ordering" class="form-control" form="filter">
+                                                                        <option value="name">По имени</option>
+                                                                        <option value="-average_rating">По средним оценкам, по убыванию</option>
+                                                                        <option value="average_rating">По средним оценкам, по возрастанию</option>
+                                                                        <option value="release_date">По новизне</option>
+                                                                        <option value="price" >По цене, дешевые</option>
+                                                                        <option value="-price">По цене, дорогие</option>
+                                                                    </select>
+                                                                </div><!-- End .select-custom -->
+
+                                <a href="#" class="sorter-btn" title="Set Ascending Direction"><span class="sr-only">Set Ascending Direction</span></a>
+                            </div><!-- End .toolbox-item -->
+                        </div><!-- End .toolbox-left -->
+                    </nav>
+
+                    <div class="row row-sm product-ajax-grid">
+                        <!-- games -->
+                    </div><!-- End .row -->
+
+                        <nav class="toolbox toolbox-pagination">
+
+
+                            <ul class="pagination">
+                                {#  #}
+                            </ul>
+                        </nav>
+
+
+
+                </div><!-- End .col-lg-9 -->
+
+                <aside class="sidebar-shop col-lg-3 order-lg-first">
+                    <form action="{% url 'api:get_games' %}" method="get" id="filter">
+                        <div class="sidebar-wrapper">
+
+                            <div class="widget">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true"
+                                       aria-controls="widget-body-2">Жанры</a>
+                                </h3>
+
+                                <div class="collapse show" id="widget-body-2">
+                                    <div class="widget-body">
+                                        <ul class="cat-list">
+                                        {% cache 200 genres %}
+                                            {% for genre in genres %}
+                                                <li>
+                                                    <input type="checkbox" class="checked" name="genres"
+                                                           value="{{ genre.slug }}">
+                                                    <span>{{ genre.name }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        {% endcache %}
+                                        </ul>
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+                            <div class="widget">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true"
+                                       aria-controls="widget-body-3">Теги</a>
+                                </h3>
+
+                                <div class="collapse show" id="widget-body-3">
+                                    <div class="widget-body">
+                                        <ul class="cat-list">
+                                        {% cache 200 tags %}
+                                            {% for tag in tags %}
+                                                <li>
+                                                    <input type="checkbox" class="checked" name="tags"
+                                                           value="{{ tag.slug }}">
+                                                    <span>{{ tag.name }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        {% endcache %}
+                                        </ul>
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+                            <div class="widget">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true"
+                                       aria-controls="widget-body-3">Цена</a>
+                                </h3>
+
+                                <div class="collapse show" id="widget-body-4">
+                                    <div class="widget-body">
+                                        <div class="price-slider-wrapper">
+                                            <input type="range" name="price" class="price-slider" min="0" max="10000" value="3000"><!-- End #price-slider -->
+                                        </div><!-- End .price-slider-wrapper -->
+
+                                        <div class="filter-price-action">
+                                            <div class="filter-price-text">
+                                                Цена <= 3000 руб.
+                                                <span ></span>
+                                            </div><!-- End .filter-price-text -->
+                                        </div><!-- End .filter-price-action -->
+
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                                <br>
+                                <button type="submit" class="btn btn-primary">Отфильтровать</button>
+                            </div><!-- End .widget -->
+
+
+                        </div><!-- End .sidebar-wrapper -->
+
+                    </form>
+                </aside>
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </main><!-- End .main -->
+{% endblock %}
+{% block js_scripts %}
+    <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/hogan-3.0.1.js' %}"></script>
+{% endblock %}

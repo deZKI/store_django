@@ -1,0 +1,32 @@
+
+<style>
+    .rating-list li {
+        float: right;
+        color: #ddd;
+        padding: 10px 5px;
+    }
+
+    .rating-list li:hover,
+    .rating-list li:hover ~ li {
+        color: orange;
+    }
+
+    .rating-list {
+        display: inline-block;
+        list-style: none;
+    }
+
+    .checked {
+        color: orange;
+    }
+</style>
+<div class="ratings-container">
+    <h5 class="card-title">Средняя оценка:
+        <br>
+        <span class="fa fa-star {% if game.average_rating > 0 %} checked {% endif %}"></span>
+        <span class="fa fa-star {% if game.average_rating > 1 %} checked {% endif %}"></span>
+        <span class="fa fa-star {% if game.average_rating > 2 %} checked {% endif %}"></span>
+        <span class="fa fa-star {% if game.average_rating > 3 %} checked {% endif %}"></span>
+        <span class="fa fa-star {% if game.average_rating > 4 %} checked {% endif %}"></span>
+    </h5>
+</div><!-- End .product-container -->

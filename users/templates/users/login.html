@@ -1,0 +1,55 @@
+{% extends 'games/base.html' %}
+{% block content %}
+        <main class="main" style="min-height: 500px">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Главна</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Авторизация</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="container">
+            <div class="row">
+                {% if messages or form.non_field_errors %}
+                            <div class="alert {% if messages %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show" role="alert"
+                                 style="margin-top: 50px;">
+                                 {% if form.non_field_errors %}
+                                    {{ form.non_field_errors }}
+                                 {% else %}
+                                    {% for message in messages %}
+                                            {{ message }}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                {% endif %}
+            </div>
+                <div class="row">
+
+                        <div class="heading">
+                            <h2 class="title">Авторизация</h2>
+                            <p>Если у вас есть аккаунт, пожалуйста, авторизуйтесь</p>
+                        </div><!-- End .heading -->
+
+
+                        <form action="#" method="post" style="margin-left: auto;
+                                                margin-right: auto;
+                                                 width: 30em">
+                            {% csrf_token %}
+                            {{ form.username }}
+                            {{ form.password }}
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary">Войти</button>
+                                <a href="{% url 'users:forgot-password' %}" class="forget-pass"> Забыли пароль?</a>
+                                <a href="{% url 'users:registration' %}">Нужен аккаунт? Зарегистрируйтесь!</a>
+                            </div><!-- End .form-footer -->
+
+                        </form>
+                </div><!-- End .row -->
+
+            </div><!-- End .container -->
+
+        </main><!-- End .main -->
+{% endblock %}

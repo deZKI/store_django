@@ -1,0 +1,67 @@
+{% extends 'games/base.html' %}
+{% block content %}
+    <main class="main">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Мой аккаунт</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col">
+                    <h2>Информация об аккаунте</h2>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="{{ form.first_name.id_for_label }}">Имя</label>
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="{{ form.last_name.id_for_label }}">Фамилия</label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <label class="small mb-1" for="{{ form.username.id_for_label }}">Имя
+                                    пользователя</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="small mb-1" for="{{ form.email.id_for_label }}">Адрес электронной
+                                    почты</label>
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-lg-12" style="margin-top: 33px;">
+                                <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- End .col-lg-9 -->
+                <div class="col" style="color: #767f84;">
+                    {% include 'users/baskets.html' %}
+                </div>
+            </div><!-- End .row -->
+               <div class="widget widget-dashboard">
+                        <h3 class="widget-title">Мой аккаунт</h3>
+
+                        <ul class="list">
+                            <li><a href="{% url 'orders:orders_list' %}">История покупок</a></li>
+
+                            <li><a href="#">Избранное</a></li>
+                        </ul>
+                    </div><!-- End .widget -->
+        </div><!-- End .container -->
+
+    </main><!-- End .main -->
+{% endblock %}

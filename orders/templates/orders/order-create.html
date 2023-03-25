@@ -1,0 +1,88 @@
+{% extends 'orders/base.html' %}
+{% block order_content %}
+            <ul class="checkout-progress-bar">
+                <li class="active">
+                    <span>Доставка</span>
+                </li>
+                <li>
+                    <span>Оплата</span>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-lg-8">
+                    <ul class="checkout-steps">
+                        <li>
+                            <h2 class="step-title">Адрес доставки</h2>
+                            <form action="{% url 'orders:order_create' %}" method="post">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label for="{{ form.fist_name.id_for_label }}" class="form-label">Имя</label>
+                                        {{ form.first_name }}
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="{{ form.last_name.id_for_label }}"
+                                               class="form-label">Фамилия</label>
+                                        {{ form.last_name }}
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">Адрес электронной
+                                            почты</label>
+                                        {{ form.email }}
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <label for="{ form.address.id_for_label }}" class="form-label">Адрес</label>
+                                        {{ form.address }}
+                                    </div>
+
+                                </div>
+
+                                <hr class="my-4">
+
+                                <button class="w-100 btn btn-primary btn-lg" type="submit">Продолжить</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div><!-- End .col-lg-8 -->
+
+                <div class="col-lg-4" style="color: #767f84;">
+                    <div class="order-summary">
+                        <h3>Итог</h3>
+
+                        <h4>
+                            <a data-toggle="collapse" href="#order-cart-section" class="collapsed" role="button"
+                               aria-expanded="false" aria-controls="order-cart-section">{{ baskets.total_quantity }}</a>
+                        </h4>
+
+                        <div class="collapse" id="order-cart-section">
+                            <table class="table table-mini-cart">
+                                <tbody>
+                                {% for basket in baskets %}
+                                    <tr>
+                                        <td class="product-col">
+                                            <figure class="product-image-container">
+                                                <a href="{{ basket.game.get_absolute_url }}" class="product-image">
+                                                    <img src="{{ basket.game.main_image.url }}" alt="product">
+                                                </a>
+                                            </figure>
+                                            <div>
+                                                <h2 class="product-title">
+                                                    <a href="{{ basket.game.main_image.url }}">{{ basket.game.name }}</a>
+                                                </h2>
+                                            </div>
+                                        </td>
+                                        <td class="price-col">{{ basket.game.price }} руб.</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div><!-- End #order-cart-section -->
+                    </div><!-- End .order-summary -->
+                </div><!-- End .col-lg-4 -->
+            </div><!-- End .row -->
+            </div><!-- End .container -->
+{% endblock %}

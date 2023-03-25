@@ -1,0 +1,186 @@
+[
+  {
+    "model": "games.gamegenre",
+    "pk": 1,
+    "fields": {
+      "name": "Экшен",
+      "slug": "action"
+    }
+  },
+  {
+    "model": "games.gamegenre",
+    "pk": 2,
+    "fields": {
+      "name": "Инди",
+      "slug": "indi"
+    }
+  },
+  {
+    "model": "games.gamegenre",
+    "pk": 3,
+    "fields": {
+      "name": "Шутер",
+      "slug": "shooter"
+    }
+  },
+  {
+    "model": "games.gamegenre",
+    "pk": 4,
+    "fields": {
+      "name": "Приключения",
+      "slug": "adventure"
+    }
+  },
+  {
+    "model": "games.developer",
+    "pk": 1,
+    "fields": {
+      "name": "Treyarch"
+    }
+  },
+  {
+    "model": "games.publisher",
+    "pk": 1,
+    "fields": {
+      "name": "Activision"
+    }
+  },
+  {
+    "model": "games.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Для одного игрока",
+      "slug": "single-player",
+      "published": true
+    }
+  },
+  {
+    "model": "games.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Кооператив",
+      "slug": "coop",
+      "published": true
+    }
+  },
+  {
+    "model": "games.game",
+    "pk": 1,
+    "fields": {
+      "name": "Call of Duty: Black Ops",
+      "slug": "call-of-duty-black-ops",
+      "description": "Call of Duty: Black Ops предстала перед геймерами всего мира в качестве превосходного продолжения полюбившегося шутера. По своей сути каждый, кто решил купить ключ Call of Duty: Black Ops, получит в своё расположение долгожданную седьмую часть игры. Как известно, буквально каждая часть этой серии иг",
+      "price": "2000.00",
+      "quantity": 10,
+      "developer": 1,
+      "publisher": 1,
+      "release_date": "2010-04-30",
+      "age_limit": "Информация, запрещённая для распространения среди детей",
+      "draft": true,
+      "genres": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "games.game",
+    "pk": 2,
+    "fields": {
+      "name": "Call of Duty: Black Ops 2",
+      "slug": "call-of-duty-black-ops-2",
+      "description": "Дэвид Мэйсон (позывной «Сектор»), сын Алекса Мэйсона из первой части Black Ops, ещё в детстве потерял отца и теперь ему нужно найти убийц. Кроме того, он, как боец антитеррористической группы «Морских котиков», должен победить Рауля Менендеса, главного террориста современности, лидера террористическ",
+      "price": "2550.00",
+      "quantity": 10,
+      "developer": 1,
+      "publisher": 1,
+      "release_date": "2012-05-01",
+      "age_limit": "Информация, запрещённая для распространения среди детей",
+      "draft": true,
+      "genres": [
+        2
+      ],
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "games.game",
+    "pk": 3,
+    "fields": {
+      "name": "Call of Duty: Black Ops 3",
+      "slug": "call-of-duty-black-ops-3",
+      "description": "Call of Duty: Black Ops III — компьютерная игра в жанре научно-фантастического трёхмерного шутера от первого лица, двенадцатая во франшизе Call of Duty и третья в сюжетной подсерии Black Ops, начинавшейся как продолжение от кампании World at War; также последняя игра во франшизе, изданная на консоля",
+      "price": "4400.00",
+      "quantity": 0,
+      "developer": 1,
+      "publisher": 1,
+      "release_date": "2015-04-09",
+      "age_limit": "Информация, запрещённая для распространения среди детей",
+      "draft": true,
+      "genres": [
+        1,
+        3
+      ],
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "image": "main.webp"
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "image": "sh_1145197_1.jpeg"
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 3,
+    "fields": {
+      "product": 1,
+      "image": "sh_1145197_2.jpeg"
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 4,
+    "fields": {
+      "product": 1,
+      "image": "logo.png"
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 5,
+    "fields": {
+      "product": 2,
+      "image": "Call_of_Duty_Black_Ops_2_-_boxart_PS3.png"
+    }
+  },
+  {
+    "model": "games.gameimage",
+    "pk": 6,
+    "fields": {
+      "product": 3,
+      "image": "BO3_PC_Poster.png"
+    }
+  }
+]

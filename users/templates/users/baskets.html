@@ -1,0 +1,55 @@
+{% if baskets %}
+        <h4 class="mt-3 mb-3 d-flex justify-content-between align-items-center mb-3">
+        Корзина <span class="badge badge-secondary badge-pill">{{ baskets.total_quantity }}</span>
+    </h4>
+    {% for basket in baskets %}
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title" >{{ basket.game.name }}</h5>
+            <figure class="product-image-container">
+                <div class="col">
+                    <a href="{% url 'games:game' basket.game.slug %}" class="product-image">
+                        <img src="{{ basket.game.main_image.url }}" style="height: 200px;width:200px" alt="product">
+                    </a>
+                </div>
+                <div class="col">
+                     <p class="card-text">{{ basket.game.description }}</p>
+                </div>
+            </figure>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-light">
+                <div class="row text-center">
+                    <div class="col-lg-4">
+                        <div type="number" class="form-control">{{ basket.quantity }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4 ">{{ basket.sum }}руб.</div>
+                    <div class="col-lg-4">
+
+                        <button onclick="apiBasketRemove.call(this, {{ basket.id }})" >
+                                    <i class="fas fa-trash"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    {% endfor %}
+    <div class="card mb-3">
+        <div class="card-footer">
+            <p class="float-left">Итого</p>
+            <h4 class="float-right">{{ baskets.total_sum }}руб.</h4>
+        </div>
+    </div>
+    <a class="btn btn-success btn-lg float-right" href="{% url 'orders:order_create' %}">
+        Оформить заказ
+    </a>
+{% else %}
+            <h4 class="mt-3 mb-3 d-flex justify-content-between align-items-center mb-3">
+        Корзина пуста</span>
+            </h4>
+{% endif %}

@@ -1,0 +1,32 @@
+{% extends 'orders/base.html' %}
+{% block order_content %}
+    <ul class="checkout-progress-bar">
+                <li class="active">
+                    <span>Доставка</span>
+                </li>
+                 <li class="active">
+                    <span>Ошибка</span>
+                </li>
+                <li>
+                    <span>Оплата</span>
+                </li>
+    </ul>
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header">
+                                <h3 class="text-center font-weight-light my-4">Не получилось сформировать заказ!</h3>
+                            </div>
+                            <div class="card-body text-center">
+                                <h4>
+                                    Печаль
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+{% endblock %}
