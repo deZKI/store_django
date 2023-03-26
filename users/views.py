@@ -13,8 +13,6 @@ from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm, Us
 from users.models import User, EmailVerification
 
 
-# from users.forms import UserProfileForm
-
 class UserLoginView(CommonContextMixin, LoginView):
     template_name = 'users/login.html'
     form_class = UserLoginForm
