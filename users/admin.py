@@ -8,17 +8,17 @@ from users.models import User, EmailVerification
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ["username", "is_verified_email"]
-    readonly_fields = ['preview', 'password']
+    readonly_fields = ['profile_view', 'password']
     fields = ['username', 'password',
               ('first_name', 'last_name', 'email'),
               ('is_verified_email', 'is_staff', 'is_active'),
-              'preview', 'image']
-
-    def preview(self, obj):
-        return mark_safe(f'<img src="{obj.image.url}" style="max-height: 150px;">')
-
+              'profile_view', 'image']
     inlines = [BasketItemAdmin,
                RatingAdmin]
+
+    @classmethod
+    def profile_view(cls, obj):
+        return mark_safe(f'<img src="{obj.image.url}" style="max-height: 150px;">')
 
 
 @admin.register(EmailVerification)

@@ -149,7 +149,7 @@
                             </div>
 
                     {% else %}
-                        <a href="{% url 'users:login' %}"> Войти </a>
+                        <a href="{% url 'users:login' %}?next={{ request.get_full_path }}"> Войти </a>
                     {% endif %}
                 </div>
             </div>

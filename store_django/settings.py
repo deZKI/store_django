@@ -128,7 +128,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -169,7 +168,7 @@ CACHES = {
 # sending emails
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # по умолчанию стоит такой, добавил по приколу
 
-DOMAIN_NAME = os.getenv('DOMAIN_NAME')
+HOST_URL = os.getenv('HOST_URL')
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')

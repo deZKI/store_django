@@ -21,5 +21,5 @@ class BasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BasketItem
-        fields = ('id', 'user', 'game', 'quantity', 'sum', 'created_timestamp')
+        fields = ('id', 'game', 'quantity', 'sum', 'created_timestamp')
         read_only_fields = ('created_timestamp',)

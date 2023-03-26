@@ -69,10 +69,16 @@ function catalog_render(data) {
         divpagen.innerHTML = pagination
     }
 }
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : '';
+}
 
 function apiBasketAdd(game_id) {
     let url = `/api/v1/baskets/`
-
+    document.cookie = `basket=${getCookie('basket')},${game_id}`
     fetch(url, {
         method: 'POST',
         body: JSON.stringify({game: game_id, quantity: 1}),
@@ -83,8 +89,9 @@ function apiBasketAdd(game_id) {
 
     })
         .then(response => {
-           location.reload()
+            location.reload()
         })
+
 }
 function apiBasketRemove(basket_id) {
     let url = `/api/v1/baskets/${basket_id}`

@@ -1,8 +1,9 @@
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 
 
@@ -25,7 +26,7 @@ class EmailVerification(models.Model):
 
     def send_verification_email(self):
         link = reverse('users:email_verification', kwargs={'email': self.user.email, 'code': self.code})
-        verification_link = f'{settings.DOMAIN_NAME}{link}'
+        verification_link = f'{settings.HOST_URL}{link}'
         subject = f'Подтверждение учетной записи для {self.user.username}'
         message = f'Для подтверждение учетной записи перейдите по ссылке {verification_link}'
         send_mail(

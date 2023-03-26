@@ -14,8 +14,6 @@ class RatingAdmin(admin.TabularInline):
     fields = ['game', 'rating']
 
 
-
-
 class GameImageAdmin(ImageUploaderInline):
     """Использование сторонней библиотеки для
         добавления нескольких фотографий за раз"""

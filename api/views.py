@@ -15,14 +15,6 @@ from api.serializers import GameSerializer, BasketSerializer
 from games.models import Game, BasketItem, Rating
 
 
-
-
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_auth_token(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
-
-
 class GameListAPIView(ListAPIView):
     queryset = Game.objects.annotate(average_rating=Avg('game_score__rating'))
     serializer_class = GameSerializer
@@ -46,7 +38,6 @@ class BasketModelViewSet(ModelViewSet):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
         response = super().list(request, *args, **kwargs)
         response_data = {'games': response.data}
         response.data = response_data

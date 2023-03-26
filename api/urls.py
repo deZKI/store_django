@@ -11,7 +11,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('game_list/', cache_page(600)(GameListAPIView.as_view()), name='get_games'),
+    path('games/', cache_page(600)(GameListAPIView.as_view()), name='games'),
     path('rate/<int:game_id>/<int:rating>/', rate),
 
     # path('baskets/remove/<int:basket_id>/', basket_remove, name='basket_remove'),
