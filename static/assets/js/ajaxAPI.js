@@ -2,6 +2,7 @@ const ajax_filter = document.querySelector('form[id=filter]')
 const slider = document.querySelector('.price-slider')
 let slider_value = document.querySelector('.filter-price-text')
 let param_form = ''
+let basket = document.querySelector('.cart-dropdown')
 
 slider.addEventListener('input', function (e){
     slider_value.innerHTML = `Цена <= ${slider.value} руб.`
@@ -73,39 +74,7 @@ function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
-  return matches ? decodeURIComponent(matches[1]) : '';
-}
-
-function apiBasketAdd(game_id) {
-    let url = `/api/v1/baskets/`
-    document.cookie = `basket=${getCookie('basket')},${game_id}`
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({game: game_id, quantity: 1}),
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken,
-        },
-
-    })
-        .then(response => {
-            location.reload()
-        })
-
-}
-function apiBasketRemove(basket_id) {
-    let url = `/api/v1/baskets/${basket_id}`
-    fetch(url, {
-        method: 'DELETE',
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken,
-        },
-
-    })
-        .then(response => {
-            location.reload()
-        })
+  return matches ? decodeURIComponent(matches[1]) : ''
 }
 
 function rate(rating, game_id) {

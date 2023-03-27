@@ -18,7 +18,7 @@
                             <div class="product-slider-container product-item">
                                 <div class="product-single-carousel owl-carousel owl-theme">
                                     <div class="product-item">
-                                        <img class="product-single-image" src={{ object.main_image.url }}/>
+                                        <img class="product-single-image" id="main_img" src={{ object.main_image.url }}/>
                                     </div>
                                     {% for image in game.images.all %}
                                         <div class="product-item">
@@ -122,13 +122,13 @@
                                     <span class="product-info">{{ object.age_limit }}</span>
                                 </div>
                             </div>
-
                             <div class="product-action product-all-icons">
                                 <button class="paction add-cart" onclick="apiBasketAdd.call(this, {{ object.id }})" title="Add to Cart" >
                                     Добавить в корзину
                                 </button>
                                 </a>
                             </div><!-- End .product-action -->
+
                             <div class="share-social">
                                 <h3>Поделиться в социальных сетях:</h3>
                                 <a href="http://vk.com/share.php?url=http://127.0.0.1:8000{% url 'games:game' object.slug %}"

@@ -74,63 +74,68 @@
                         </form>
                     </div>
 
-                    {% if user.is_authenticated %}
                         <a href="#" class="porto-icon"><i class="icon icon-wishlist-2"></i></a>
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="minicart-icon"></i>
-                                <span class="cart-count">{{ baskets.total_quantity }}</span>
-                            </a>
+                            <div class="dropdown cart-dropdown">
+                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false" data-display="static">
+                                    <i class="minicart-icon"></i>
+                                    <span class="cart-count">{{ baskets.total_quantity }}</span>
+                                </a>
 
-                            <div class="dropdown-menu">
-                                <div class="dropdownmenu-wrapper">
-                                    <div class="dropdown-cart-header">
-                                        <span> {{ baskets.total_quantity }}</span>
+                                <div class="dropdown-menu">
+                                    <div class="dropdownmenu-wrapper">
+                                        <div class="dropdown-cart-header">
+                                            <span class="cart-count"> {{ baskets.total_quantity }}</span>
 
-                                        <a href="">Корзина</a>
-                                    </div><!-- End .dropdown-cart-header -->
-                                    <div class="dropdown-cart-products">
-                                        {% for basket in baskets %}
-                                            <div class="product">
-                                                <div class="product-details">
-                                                    <h4 class="product-title">
-                                                        <a href={% url 'games:game' basket.game.slug %}>{{ basket.game.name }}</a>
-                                                    </h4>
+                                            <a href="">Корзина</a>
+                                        </div><!-- End .dropdown-cart-header -->
+                                        <div class="dropdown-cart-products">
+                                            {% for basket in baskets %}
+                                                <div class="product">
+                                                    <div class="product-details">
+                                                        <h4 class="product-title">
+                                                            <a href={% url 'games:game' basket.game.slug %}>{{ basket.game.name }}</a>
+                                                        </h4>
 
-                                                    <span class="cart-product-info">
-                                                    <span class="cart-product-qty">{{ basket.game.price }}руб.</span>
-                                                        <br>
-                                                    <span class="cart-product-qty">кол:{{ basket.quantity }}</span>
-                                                </span>
-                                                </div><!-- End .product-details -->
+                                                        <span class="cart-product-info">
+                                                        <span class="cart-product-qty">{{ basket.game.price }}руб.</span>
+                                                            <br>
+                                                        <span class="cart-product-qty">кол:{{ basket.quantity }}</span>
+                                                    </span>
+                                                    </div><!-- End .product-details -->
 
-                                                <figure class="product-image-container">
-                                                    <a href="{% url 'games:game' basket.game.slug %}"
-                                                       class="product-image">
-                                                        <img src="{{ basket.game.main_image.url }}" alt="product">
-                                                    </a>
-                                                    <button class="btn-remove" title="Remove Product"
-                                                            onclick="apiBasketRemove.call(this, {{ basket.id }})"><i
-                                                            class="icon-retweet"></i></button>
-                                                </figure>
-                                            </div><!-- End .product -->
-                                        {% endfor %}
-                                    </div><!-- End .cart-product -->
+                                                    <figure class="product-image-container">
+                                                        <a href="{% url 'games:game' basket.game.slug %}"
+                                                           class="product-image">
+                                                            <img src="{{ basket.game.main_image.url }}" alt="product">
+                                                        </a>
+                                                        <button class="btn-remove" title="Remove Product"
+                                                                onclick="apiBasketRemove.call(this, {{ basket.id }})"><i
+                                                                class="icon-retweet"></i></button>
+                                                    </figure>
+                                                </div><!-- End .product -->
+                                            {% endfor %}
+                                        </div><!-- End .cart-product -->
 
-                                    <div class="dropdown-cart-total">
-                                        <span>Итог:</span>
+                                        <div class="dropdown-cart-total">
+                                            <span>Итог:</span>
 
-                                        <span class="cart-total-price">{{ baskets.total_sum }} руб.</span>
+                                            <span class="cart-total-price">{{ baskets.total_sum }} руб.</span>
                                     </div><!-- End .dropdown-cart-total -->
-
+                                {% if user.is_authenticated %}
                                     <div class="dropdown-cart-action">
                                         <a href="{% url 'orders:order_create' %}" class="btn btn-block">Купить</a>
                                     </div><!-- End .dropdown-cart-total -->
+                                {% else %}
+                                    <div class="dropdown-cart-action">
+                                        <a href="{% url 'users:login' %}" class="btn btn-block">Чтобы оформить заказ<br>Авторизуйтесь</a>
+                                    </div><!-- End .dropdown-cart-total -->
+                                {% endif %}
                                 </div><!-- End .dropdownmenu-wrapper -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .dropdown -->
                         <i class="bi bi-window-split"></i>
+                {% if user.is_authenticated %}
                         <div class="header-user btn-group">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -248,6 +253,7 @@
 <!-- Main JS File -->
 <script src="{% static 'assets/js/main.min.js' %}"></script>
 <script src="{% static 'assets/js/ajaxAPI.js' %}"></script>
+<script src="{% static 'assets/js/cart.js' %}"></script>
 {% block js_scripts %}
 {% endblock %}
 </body>

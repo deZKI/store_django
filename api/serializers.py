@@ -18,8 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BasketSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
+    game = GameSerializer
     class Meta:
         model = BasketItem
-        fields = ('id', 'game', 'quantity', 'sum', 'created_timestamp')
+        fields = ('id', 'user', 'game', 'quantity', 'sum', 'created_timestamp')
         read_only_fields = ('created_timestamp',)

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, \
+
+from django.contrib.auth.views import LoginView, LogoutView, \
     PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetDoneView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponseRedirect
@@ -11,6 +12,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from common.views import CommonContextMixin  # мой миксин
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm, UserSetPasswordForm, UserEmailForm
 from users.models import User, EmailVerification
+from games.models import BasketItem
 
 
 class UserLoginView(CommonContextMixin, LoginView):
@@ -19,6 +21,26 @@ class UserLoginView(CommonContextMixin, LoginView):
     redirect_authenticated_user = True
     title = 'Авторизация'
     redirect_field_name = 'next'
+
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        redirect = super(UserLoginView, self).form_valid(form)
+        if 'basket' in self.request.COOKIES:
+            games = self.request.COOKIES['basket'].split()
+            for game_id in games:
+                BasketItem.objects.create(user_id=self.request.user.id, game_id=game_id, quantity=1)
+                print()
+            redirect.delete_cookie('basket')
+        redirect.set_cookie('is_logged','true', path='/')
+        return redirect
+
+
+class UserLogoutView(LogoutView):
+
+    def get(self, request, *args, **kwargs):
+        response = super(UserLogoutView, self).get(request, *args, **kwargs)
+        response.delete_cookie('is_logged')
+        return response
 
 
 class ChangePasswordView(PasswordResetView):

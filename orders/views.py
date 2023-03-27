@@ -1,12 +1,12 @@
 import json
 
 from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from yookassa import Configuration, Payment
 from yookassa.domain.common import SecurityHelper
@@ -25,7 +25,7 @@ Configuration.configure(secret_key=settings.YOOKASSA_SECRET_KEY, account_id=sett
 #     "url": "https://e621-185-48-112-241.jp.ngrok.io/orders/notification_url/",
 # })
 
-class OrderCreateView(CommonContextMixin, CreateView):
+class OrderCreateView(LoginRequiredMixin, CommonContextMixin, CreateView):
     title = 'Оформление заказа'
     template_name = 'orders/order-create.html'
     form_class = OrderForm
