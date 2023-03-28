@@ -14,3 +14,16 @@ def send_email_order_create_admin(order_id, username):
         recipient_list=[settings.ADMIN_EMAIL],
         fail_silently=False,
     )
+
+@shared_task(name='orderConfirm')
+def send_email_order_confirm(order_id, email):
+    subject = f'Статус заказа {order_id} изменился'
+    message = f'Статус заказа {order_id} изменился на Отправлен' \
+              f'link: {settings.HOST_URL}/orders/{order_id}/'
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[email],
+        fail_silently=False,
+    )

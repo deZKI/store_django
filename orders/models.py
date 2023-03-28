@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from games.models import BasketItem
 from users.models import User
 
+from .tasks import send_email_order_confirm
 
 # Почему не связываем поля с пользователем – оформление на другого человека
 # Почему не связываем поля с продуктом или баскет(при выполнение удаляется баскет. а у продукта может меняться цена)
@@ -24,7 +25,9 @@ class Order(models.Model):
     status = models.SmallIntegerField(default=CREATED, choices=STATUSES, verbose_name='Статус')
     initiator = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Инициатор')
 
+
     def save(self, *args, **kwargs):
+        """Переопределение метода save"""
         if self.status != self.PAID:
             baskets = BasketItem.objects.filter(user=self.initiator)
             self.basket_history = {
@@ -32,9 +35,14 @@ class Order(models.Model):
                 'total_sum': float(baskets.total_sum()),
             }
             baskets.delete()
+        else:
+            #обработать сигнал
+            send_email_order_confirm.delay(self.id, self.initiator.email)
+
         super(Order, self).save(*args, **kwargs)
 
     def update_after_payment(self):
+        """Функция для подтверждения оплаты"""
         self.status = self.PAID
         self.save()
 
