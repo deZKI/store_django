@@ -9,7 +9,7 @@ class Basket {
         this.name = name
         this.price = Number(price)
         this.quantity = quantity
-        this.game_url = game_url
+        this.game_url = game_url.href
         this.img = img
     }
 

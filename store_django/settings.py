@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -81,16 +82,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'store_django.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # postgres
 DATABASES = {

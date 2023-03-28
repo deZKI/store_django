@@ -1,8 +1,10 @@
-from django.contrib import admin
+from django.db.models import QuerySet
 from django.utils.safestring import mark_safe
 from image_uploader_widget.admin import ImageUploaderInline
 
 from games.models import GameGenre, Game, GameImage, Developer, Publisher, Tag, BasketItem, Rating
+
+from django.contrib import admin
 
 # мб выделить в отдельный файл такие настройки или в settings
 admin.AdminSite.site_header = 'Бизнес'
@@ -47,18 +49,19 @@ class PublisherAdmin(admin.ModelAdmin):
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'preview', 'price', 'quantity', 'developer', 'publisher',
-                    'average_rating', 'ready']
+                    'average_rating', 'inIndex']
     readonly_fields = ['average_rating', 'preview']
+    actions = ['set_in_index']
 
     fields = [('name', 'slug', 'average_rating'),
-              ('price', 'quantity', 'ready'),
+              ('price', 'quantity', 'ready', 'inIndex'),
               ('developer', 'publisher', 'release_date'),
               ('description'),
               ('genres', 'tags', 'age_limit'),
               ('preview', 'main_image'),
               ]
     search_fields = ('name',)
-    list_filter = ['name']
+    list_filter = ['name', 'inIndex']
     autocomplete_fields = ["genres", "tags"]
     prepopulated_fields = {'slug': ('name',)}
     inlines = [
@@ -69,11 +72,14 @@ class GameAdmin(admin.ModelAdmin):
     def preview(self, obj):
         return mark_safe(f'<img src="{obj.main_image.url}" style="max-height: 150px;">')
 
+    @admin.action(description='Добавить на главную страницу')
+    def set_in_index(self, request, queryset: QuerySet):
+        queryset.update(inIndex=True)
+
 
 class BasketItemAdmin(admin.TabularInline):
     model = BasketItem
     fields = ['game', 'quantity', 'in_basket', 'created_timestamp']
     readonly_fields = ['created_timestamp']
     extra = 0
-
 

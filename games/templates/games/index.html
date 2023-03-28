@@ -6,7 +6,7 @@
             <div class="container">
                 <section>
                     <div class="row row-sm grid">
-                    {% cache 300 random_games %}
+                    {% cache 3 random_games %}
                         {% for game in random_games %}
                         <div class="col-sm-6 col-md-4 grid-item height-x2">
                             <div class="home-banner">
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="row row-sm">
-                        {% cache 60 wishlist %}
+                        {% cache 3 wishlist %}
                             {% for game in wishlist %}
                             <div class="col-6 col-md-3">
                                 <div class="product-default inner-quickview inner-icon">
@@ -105,7 +105,7 @@
                                 'dots' : true,
                                 'margin' : 0
                             }">
-                            {% cache 300 games_recently_released:":3" %}
+                            {% cache 3 games_recently_released:":3" %}
                                 {% for game in games_recently_released|slice:":3" %}
                                     <div class="product-default inner-quickview inner-icon center-details">
                                         <figure>
@@ -142,7 +142,7 @@
                             </div>
 
                         </div>
-                        {% cache 300 games_recently_released:"3:8" %}
+                        {% cache 3 games_recently_released:"3:8" %}
                         {% for game in games_recently_released|slice:"3:8" %}
                             <div class="grid-item col-6 col-sm-3 col-lg-2 height-xl">
                                 <div class="product-default inner-quickview inner-icon">

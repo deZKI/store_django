@@ -99,10 +99,6 @@ let htmlGames = '\
 \
                                             <img src="{{main_image}}" style="height: 200px;width:200px">\
                                         </a>\
-                                        <div class="btn-icon-group">\
-                                            <button class="btn-icon btn-add-cart" data-toggle="modal"\
-                                                    data-target="#addCartModal"><i class="icon-bag" onclick="apiBasketAdd.call(this, {{ id }})"></i></button>\
-                                        </div>\
                                         <a href="/catalog/modal-game/{{slug}}" class="btn-quickview"\
                                            title="Quick View">Quick View</a>\
                                     </figure>\

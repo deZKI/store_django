@@ -72,7 +72,7 @@ class Game(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name='Название')
 
     slug = models.SlugField(max_length=50, unique=True, db_index=True, verbose_name="URL")
-
+    inIndex = models.BooleanField(default=False, verbose_name='На главную?')
     main_image = models.ImageField(default='image', upload_to=f'games/main', verbose_name='Главная картинка')
     description = models.TextField(max_length=500, verbose_name='Описание')
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='Цена')
@@ -160,6 +160,9 @@ class BasketItem(models.Model):
     objects = BasketQuerySet.as_manager()
 
     def de_json(self):
+        #добавить логику на уменьшение товара
+        self.game.quantity = self.game.quantity - self.quantity
+        self.game.save()
         basket_item = {
             'product_name': self.game.name,
             'quantity': self.quantity,
@@ -173,4 +176,5 @@ class BasketItem(models.Model):
 
     def __str__(self):
         return f'Корзина для {self.user.email} | Игра: {self.game.name}'
+
 
