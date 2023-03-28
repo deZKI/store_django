@@ -5,11 +5,11 @@ const totalQuantityCart = document.querySelectorAll(".cart-count")
 
 class Basket {
     constructor(id, name, price, quantity, game_url, img) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
+        this.id = id
+        this.name = name
+        this.price = Number(price)
         this.quantity = quantity
-        this.game_url = game_url.href
+        this.game_url = game_url
         this.img = img
     }
 
@@ -77,7 +77,16 @@ class Cart {
         this.total_quantity = localStorage.getItem('total_quantity') | 0
         if (!data) return;
         this._baskets = data;
-
+    }
+    isInCart(game_id){
+        const data = JSON.parse(localStorage.getItem("baskets"));
+        if (!data) return false;
+        for (let game of data) {
+            if (game.id === game_id){
+                return true
+            }
+        }
+        return false
     }
     renderCart(){
         cartProductsList.innerHTML = ''
@@ -88,27 +97,45 @@ class Cart {
 
   }
 	addBasket(game_id){
-        alert('добавлен')
-        let name = document.querySelector('.product-title').textContent
+        alert('добавлен игра')
         let price = document.querySelector('.product-price').textContent.replace(' руб.', '')
-        let img = document.querySelector('#main_img').getAttribute('src')
-        let game_url = window.location
-
         price = Number(price.replace(',', '.'))
-        let basket = new Basket(game_id, name, price, 1, game_url, img)
-        this.total_sum = this.total_sum + Number(price)
-        this.total_quantity = this.total_quantity + 1
 
-		this._baskets.push(basket)
+        if (this.isInCart(game_id) === true ){
+            const data = JSON.parse(localStorage.getItem("baskets"));
+            this.total_quantity = this.total_quantity + 1
+            this.total_sum = this.total_sum + price
+            this._baskets = []
+            data.forEach((game) => {
+                if (game.id === game_id){
+                    let basket = new Basket(game.id, game.name, game.price+price, game.quantity+1, game.game_url, game.img)
+                    console.log(basket)
+                    this._baskets.push(basket)
+                }
+                else{
+                    let basket = new Basket(game.id, game.name, game.price, game.quantity, game.game_url, game.img)
+                    this._baskets.push(basket)
+                }
+            });
+            this.renderCart()
+        }
+        else {
+            let name = document.querySelector('.product-title').textContent
+            let img = document.querySelector('#main_img').getAttribute('src')
+            let game_url = window.location
+            let basket = new Basket(game_id, name, Number(price), 1, game_url, img)
+            this.total_sum = this.total_sum + Number(price)
+            this.total_quantity = this.total_quantity + 1
+            this._baskets.push(basket)
+            this._insert(basket)
+        }
         this._setLocalStorage()
-        this._insert(basket)
         this._set_total_values()
 	}
     removeBasket(game_id){
         const data = JSON.parse(localStorage.getItem("baskets"));
         this._baskets = []
         data.forEach((game) => {
-            alert(game.id, game_id)
             if (game.id === game_id){
                 this.total_sum =  this.total_sum - game.price
                 this.total_quantity = this.total_quantity - 1
@@ -126,7 +153,6 @@ class Cart {
 const cart = new Cart()
 
 function apiBasketAdd(game_id) {
-    cart.addBasket(game_id)
     if (getCookie('is_logged') === 'true') {
         let url = `/api/v1/baskets/`
         localStorage.removeItem('baskets')
@@ -140,20 +166,19 @@ function apiBasketAdd(game_id) {
 
         })
             .then(response => {
-
+                location.reload()
             })
     } else {
+        cart.addBasket(game_id)
 
-        // #удаление из кук
         document.cookie = `basket=${getCookie('basket')} ${game_id};path=/`
     }
 }
 
 function apiBasketRemove(basket_id) {
-    cart.removeBasket(basket_id)
     if (getCookie('is_logged') === 'true') {
         let url = `/api/v1/baskets/${basket_id}`
-         fetch(url, {
+        fetch(url, {
         method: 'DELETE',
         headers: {
             "Content-Type": "application/json",
@@ -161,11 +186,23 @@ function apiBasketRemove(basket_id) {
         },
         })
         .then(response => {
-
+            location.reload()
         })
 
     } else {
-
+        cart.removeBasket(basket_id)
+        alert(typeof(String(basket_id)))
+        let basket_cookie = remove_first_occurrence(getCookie('basket'), String(basket_id))
+        alert(basket_cookie)
+        document.cookie = `basket=${basket_cookie};path=/`
     }
 
+}
+
+function remove_first_occurrence(str, searchstr)       {
+	var index = str.indexOf(searchstr);
+	if (index === -1) {
+		return str;
+	}
+	return str.slice(0, index) + str.slice(index + searchstr.length);
 }

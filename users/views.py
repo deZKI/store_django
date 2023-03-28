@@ -28,10 +28,14 @@ class UserLoginView(CommonContextMixin, LoginView):
         if 'basket' in self.request.COOKIES:
             games = self.request.COOKIES['basket'].split()
             for game_id in games:
-                BasketItem.objects.create(user_id=self.request.user.id, game_id=game_id, quantity=1)
-                print()
+                if BasketItem.objects.filter(user_id=self.request.user.id, game_id=game_id).exists():
+                    basket = BasketItem.objects.get(user_id=self.request.user.id, game_id=game_id)
+                    basket.quantity += 1
+                    basket.save()
+                else:
+                    BasketItem.objects.create(user_id=self.request.user.id, game_id=game_id, quantity=1)
             redirect.delete_cookie('basket')
-        redirect.set_cookie('is_logged','true', path='/')
+        redirect.set_cookie('is_logged', 'true', path='/')
         return redirect
 
 
@@ -108,22 +112,3 @@ class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         """Return the object the view is displaying """
         return self.request.user
-
-
-# @login_required
-# def profile(request):
-#     if request.method == 'POST':
-#         form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('users:profile'))
-#         else:
-#             print(form.errors)
-#     else:
-#         form = UserProfileForm(instance=request.user)
-#     context = {
-#         'title': 'Личный кабинет',
-#         'form': form,
-#         'baskets': BasketItem.objects.filter(user=request.user)
-#     }
-#     return render(request, 'users/profile.html', context)

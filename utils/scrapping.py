@@ -1,9 +1,10 @@
 import json
 import random
 from datetime import datetime
-from django.http import HttpResponse
-from django.core.files import File
+
 import requests
+from django.core.files import File
+from django.http import HttpResponse
 
 from games.models import Game
 

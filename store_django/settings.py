@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
+    "phonenumber_field",
     'debug_toolbar',
     'image_uploader_widget',
     'django_filters',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'games',
     'orders',
+
 ]
 
 MIDDLEWARE = [
@@ -102,20 +104,22 @@ DATABASES = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
+if DEBUG: AUTH_PASSWORD_VALIDATORS = []
+else:
+    AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    ]
 
 LANGUAGE_CODE = 'ru-Ru'
 
@@ -180,3 +184,9 @@ EMAIL_USE_SSL = True
 CSRF_TRUSTED_ORIGINS = ['https://e621-185-48-112-241.jp.ngrok.io', ]
 YOOKASSA_SECRET_KEY = os.getenv('YOOKASSA_SECRET_KEY')
 YOOKASSA_SHOP_ID = os.getenv('YOOKASSA_SHOP_ID')
+
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+
+# Celery
+CELERY_BROKER_URL = 'redis://{}:{}'.format(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))
+CELERY_RESULT_BACKEND = 'redis://{}:{}'.format(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))

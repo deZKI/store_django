@@ -1,5 +1,5 @@
-from django.views.generic import DetailView, TemplateView
 from django.db.models import Avg
+from django.views.generic import DetailView, TemplateView
 
 from common.views import CommonContextMixin
 from games.models import Game, GameGenre, Tag, Rating
@@ -50,5 +50,4 @@ class GameView(DetailView):
             context['user_rating'] = Rating.objects.filter(user=self.request.user, game_id=self.object.id).first()
         return context
 
-    # Использование prefetch_related необходимо, чтобы дважды не обращаться в базу за фото(у нас там карусель)
 

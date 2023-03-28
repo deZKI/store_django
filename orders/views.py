@@ -14,7 +14,7 @@ from yookassa.domain.notification import WebhookNotificationEventType, WebhookNo
 
 from common.views import CommonContextMixin
 from games.models import BasketItem
-from orders.forms import OrderForm
+from orders.forms import OrderCreateForm
 from orders.models import Order
 
 Configuration.configure(secret_key=settings.YOOKASSA_SECRET_KEY, account_id=settings.YOOKASSA_SHOP_ID)
@@ -28,40 +28,41 @@ Configuration.configure(secret_key=settings.YOOKASSA_SECRET_KEY, account_id=sett
 class OrderCreateView(LoginRequiredMixin, CommonContextMixin, CreateView):
     title = 'Оформление заказа'
     template_name = 'orders/order-create.html'
-    form_class = OrderForm
-    success_url = reverse_lazy('orders:order_create')
+    form_class = OrderCreateForm
+    success_url = reverse_lazy('orders:order_success')
 
     def post(self, request, *args, **kwargs):
         super(OrderCreateView, self).post(self, request, *args, **kwargs)
         games = BasketItem.objects.filter(user=self.request.user)
-        payment = Payment.create(
-            {
-                "amount": {
-                    "value": games.total_sum(),
-                    "currency": "RUB"
-                },
-                "confirmation": {
-                    "type": "redirect",
-                    "return_url": "{}/orders/orders-success/".format(settings.DOMAIN_NAME)
-                },
-                "capture": True,
-                "description": f"Заказ №{self.object}",
-                "metadata": {
-                    'orderNumber': '72'
-                },
-                "receipt": {
-                    "customer": {
-                        "full_name": self.object.first_name,
-                        "email": self.object.email,
-                        "address": self.object.address
-                    },
-                    "items": games.yookassa_games()
-                }
-            })
-        # get confirmation url
-        confirmation_url = payment.confirmation.confirmation_url
-        fulfill_order(self.object)
-        return HttpResponseRedirect(confirmation_url)
+        # payment = Payment.create(
+        #     {
+        #         "amount": {
+        #             "value": games.total_sum(),
+        #             "currency": "RUB"
+        #         },
+        #         "confirmation": {
+        #             "type": "redirect",
+        #             "return_url": "{}/orders/orders-success/".format(settings.HOST_URL)
+        #         },
+        #         "capture": True,
+        #         "description": f"Заказ №{self.object.id}",
+        #         "metadata": {
+        #             'orderNumber': '72'
+        #         },
+        #         "receipt": {
+        #             "customer": {
+        #                 "full_name": self.object.first_name,
+        #                 "phone": self.object.phone,
+        #                 "address": self.object.address
+        #             },
+        #             "items": games.yookassa_games()
+        #         }
+        #     })
+        # # исправить
+        # fulfill_order(self.object)
+        # confirmation_url = payment.confirmation.confirmation_url
+        # return HttpResponseRedirect(confirmation_url)
+        return HttpResponseRedirect(self.success_url)
 
     def form_valid(self, form):
         form.instance.initiator = self.request.user
@@ -192,7 +193,8 @@ def webhook_yookassa(request):
 # Create your views here.
 
 #после деплоя нужно вебхук настроить и поменять
-def fulfill_order(order):
-    # order_id = int(session.metadata.order_id)
-    # order = Order.objects.get(id=order_id)
-    order.update_after_payment()
+
+# def fulfill_order(order):
+#     # order_id = int(session.metadata.order_id)
+#     # order = Order.objects.get(id=order_id)
+#     order.update_after_payment()

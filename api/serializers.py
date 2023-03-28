@@ -18,8 +18,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BasketSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    game = GameSerializer
+
+    def create(self, validated_data):
+        data = validated_data
+        del data['quantity']
+        if BasketItem.objects.filter(**data).exists():
+            basket = BasketItem.objects.get(**validated_data)
+            basket.quantity = basket.quantity + 1
+            basket.save()
+        else:
+            basket=BasketItem.objects.create(**validated_data)
+        return basket
+
     class Meta:
         model = BasketItem
         fields = ('id', 'user', 'game', 'quantity', 'sum', 'created_timestamp')
         read_only_fields = ('created_timestamp',)
+
+

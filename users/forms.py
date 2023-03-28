@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from users.models import User
-from users.tasks import send_email_verification
+from .tasks import send_email_verification, send_password_reset
 
 
 class UserLoginForm(AuthenticationForm):
@@ -28,6 +28,7 @@ class UserLoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password', 'is_verified_email')
+
 
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={
@@ -59,8 +60,9 @@ class UserRegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=True)
-        send_email_verification(user.id)
+        send_email_verification.delay(user.id)
         return user
+
 
 class UserProfileForm(UserChangeForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
@@ -88,3 +90,12 @@ class UserEmailForm(PasswordResetForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={
         'class': "form-control py-4", 'placeholder': "Введите адрес эл. почты"
     }))
+
+    def send_mail(self, subject_template_name, email_template_name, context,
+                  from_email, to_email, html_email_template_name=None):
+        context['user'] = context['user'].id
+
+        send_password_reset.delay(subject_template_name=subject_template_name,
+                                  email_template_name=email_template_name,
+                                  context=context, from_email=from_email, to_email=to_email,
+                                  html_email_template_name=html_email_template_name)
