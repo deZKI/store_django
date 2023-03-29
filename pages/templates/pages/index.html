@@ -1,0 +1,163 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load cache %}
+{% block content %}
+        <main class="home main">
+            <div class="container">
+                <section>
+                    <div class="row row-sm grid">
+                    {% cache 300 games|slice:":3" %}
+                        {% for game in games|slice:":3" %}
+                            <div class="grid-item col-6 col-sm-3 col-lg-2 height-xl">
+                                <div class="product-default inner-quickview inner-icon">
+                                    <figure>
+                                        <a href="{% url 'games:game' game.slug %}">
+                                            <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
+                                        </a>
+                                        <div class="btn-icon-group">
+                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
+                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
+                                        </div>
+                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
+                                           title="Quick View">Quick View</a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="{% url 'games:game' game.slug %}">{{ game.name }}</a>
+                                        </h2>
+
+                                        <div class="price-box">
+                                            <span class="product-price">{{ game.price }} руб.</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endcache %}
+                    </div>
+                </section>
+
+                <section class="service-section mt-1 mb-3">
+                    <div class="col-lg-6">
+                        <div class="service-widget">
+                            <i class="service-icon icon-money"></i>
+                            <div class="service-content">
+                                <h3 class="service-title">Возврат денег гарантирован</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="service-widget">
+                            <i class="service-icon icon-support"></i>
+                            <div class="service-content">
+                                <h3 class="service-title">Онлайн поддержка</h3>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div style="background-image: url({% static 'assets/images/banners/home_banner4.jpg'%}); background-repeat: no-repeat; background-size: cover; padding: 7rem 0 1rem;">
+                <div class="container">
+                    <section class="product-panel">
+                        <div class="section-title">
+                            <h2 class="mr-5">{{ object.content }}</h2>
+                            <a href="{% url 'games:catalog' %}">Посмотреть все игры<i class="icon-right"></i></a>
+                        </div>
+
+                        <div class="row row-sm">
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="container">
+
+
+                <section class="product-panel bar-bottom">
+                <br>
+                    <div class="section-title">
+                        <h2 class="mr-5">Недавно добавлены</h2>
+                        <a href="{% url 'games:catalog' %}">Посмотреть все игры<i class="icon-right"></i></a>
+                    </div>
+
+                    <div class="row row-sm grid">
+                        <div class="grid-item col-sm-6 col-lg-4 height-xxl">
+                            <div class="product-slider owl-carousel owl-theme" data-toggle="owl" data-owl-options="{
+                                'items' : 1,
+                                'nav' : false,
+                                'dots' : true,
+                                'margin' : 0
+                            }">
+                                {% cache 300 games|slice:"3:7" %}
+                                {% for game in games|slice:"3:7" %}
+                                    <div class="product-default inner-quickview inner-icon center-details">
+                                        <figure>
+                                            <a href="{% url 'games:game' game.slug %}">
+                                                <img src="{{ game.main_image.url }}">
+                                            </a>
+                                            <div class="btn-icon-group">
+                                                    <button class="btn-icon btn-add-cart" data-toggle="modal"
+                                                            data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})">
+                                                        <i class="icon-bag"></i>
+                                                    </button>
+                                             </div>
+                                            <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
+                                               title="Quick View">Quick View</a>
+                                        </figure>
+                                        <div class="product-details">
+                                            <h2 class="product-title">
+                                                <a href="{{ game.slug }}">{{ game.name }}</a>
+                                            </h2>
+                                            <div class="ratings-container">
+                                                <div class="product-ratings">
+                                                    <span class="ratings" style="width:100%"></span>
+                                                    <!-- End .ratings -->
+                                                    <span class="tooltiptext tooltip-top"></span>
+                                                </div><!-- End .product-ratings -->
+                                            </div><!-- End .product-container -->
+                                            <div class="price-box">
+                                                <span class="product-price">{{ game.price }}</span>
+                                            </div><!-- End .price-box -->
+                                        </div><!-- End .product-details -->
+                                    </div>
+                                {% endfor %}
+                            {% endcache %}
+                            </div>
+
+                        </div>
+                        {% cache 300 games:"7:10" %}
+                        {% for game in games|slice:"7:10" %}
+                            <div class="grid-item col-6 col-sm-3 col-lg-2 height-xl">
+                                <div class="product-default inner-quickview inner-icon">
+                                    <figure>
+                                        <a href="{% url 'games:game' game.slug %}">
+                                            <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
+                                        </a>
+                                        <div class="btn-icon-group">
+                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
+                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
+                                        </div>
+                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
+                                           title="Quick View">Quick View</a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="{% url 'games:game' game.slug %}">{{ game.name }}</a>
+                                        </h2>
+                                       {% include 'games/raiting.html' %}
+                                        <div class="price-box">
+                                            <span class="product-price">{{ game.price }} руб.</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% endcache %}
+
+                    </div>
+                </section>
+            </div>
+        </main><!-- End .main -->
+{% endblock %}

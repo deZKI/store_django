@@ -8,13 +8,15 @@ from games.views import IndexView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    path('test/', include('pages.urls'), name='pages'),
+
     path('catalog/', include('games.urls', namespace='games')),
     path('users/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
     path('orders/', include('orders.urls', namespace='orders')),
     path('api/v1/', include('api.urls', namespace='api')),
 
-    path('dump_games/', parsing, name='parsing'),
+    path('dump_games/<int:page>', parsing, name='parsing'),
 
 ]
 if settings.DEBUG:

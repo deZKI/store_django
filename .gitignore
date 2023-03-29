@@ -1,4 +1,4 @@
 .env.dev
-media/
 venv
 .idea
+media

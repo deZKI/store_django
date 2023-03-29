@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'games',
     'orders',
+    'pages',
 
 ]
 
@@ -149,15 +150,23 @@ REST_FRAMEWORK = {
 PAGE_SIZE = 10
 
 # django-redis
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://{}:{}/1'.format(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT')),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+if DEBUG:
+    CACHES = {
+        'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+
         }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://{}:{}/1'.format(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT')),
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
+        }
+    }
 # CACHE_MIDDLEWARE_SECONDS = 60
 # CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 # sending emails

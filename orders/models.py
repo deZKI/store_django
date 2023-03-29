@@ -8,21 +8,23 @@ from .tasks import send_email_order_confirm
 
 # Почему не связываем поля с пользователем – оформление на другого человека
 # Почему не связываем поля с продуктом или баскет(при выполнение удаляется баскет. а у продукта может меняться цена)
-
+CREATED = 0
+PAID = 1
+STATUSES = (
+    (0, 'На рассмотрении'),
+    (1, 'Отправлен'),
+)
 class Order(models.Model):
     CREATED = 0
     PAID = 1
-    STATUSES = (
-        (CREATED, 'На рассмотрении'),
-        (PAID, 'Отправлен'),
-    )
+
     first_name = models.CharField(max_length=64, verbose_name='Имя')
     last_name = models.CharField(max_length=64, verbose_name='Фамилия')
     phone = PhoneNumberField(blank=True)
     address = models.CharField(max_length=256, verbose_name='Адрес')
     basket_history = models.JSONField(default=dict, verbose_name='История корзины')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    status = models.SmallIntegerField(default=CREATED, choices=STATUSES, verbose_name='Статус')
+    status = models.SmallIntegerField(default=0, choices=STATUSES, verbose_name='Статус')
     initiator = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Инициатор')
 
 

@@ -48,20 +48,19 @@ class PublisherAdmin(admin.ModelAdmin):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'preview', 'price', 'quantity', 'developer', 'publisher',
-                    'average_rating', 'inIndex']
+    list_display = ['name', 'slug', 'preview', 'price', 'quantity',
+                    'average_rating']
     readonly_fields = ['average_rating', 'preview']
-    actions = ['set_in_index']
 
     fields = [('name', 'slug', 'average_rating'),
-              ('price', 'quantity', 'ready', 'inIndex'),
+              ('price', 'quantity', 'ready'),
               ('developer', 'publisher', 'release_date'),
               ('description'),
               ('genres', 'tags', 'age_limit'),
               ('preview', 'main_image'),
               ]
     search_fields = ('name',)
-    list_filter = ['name', 'inIndex']
+    list_filter = ['name', 'developer']
     autocomplete_fields = ["genres", "tags"]
     prepopulated_fields = {'slug': ('name',)}
     inlines = [
@@ -72,9 +71,6 @@ class GameAdmin(admin.ModelAdmin):
     def preview(self, obj):
         return mark_safe(f'<img src="{obj.main_image.url}" style="max-height: 150px;">')
 
-    @admin.action(description='Добавить на главную страницу')
-    def set_in_index(self, request, queryset: QuerySet):
-        queryset.update(inIndex=True)
 
 
 class BasketItemAdmin(admin.TabularInline):

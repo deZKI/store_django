@@ -1,12 +1,12 @@
 import json
 import random
-from datetime import datetime
 
 import requests
 from django.core.files import File
 from django.http import HttpResponse
+from django.db import IntegrityError
 
-from games.models import Game
+from games.models import Game, GameGenre, Russian_system_of_age_ratings
 
 cookies = {
     'SL_G_WPT_TO': 'ru',
@@ -38,29 +38,47 @@ headers = {
 }
 
 
-def parsing(request):
+def parsing(request_dj, page):
     response = requests.get(
-        'https://ag.ru/api/games/lists/popular?discover=true&&page_size=100&page=2&key=1287fbd232d14b00b7af6b11868f9c6b',
+        f'https://ag.ru/api/games/lists/popular?discover=true&&page_size=10page={page}&key=1287fbd232d14b00b7af6b11868f9c6b',
         cookies=cookies,
         headers=headers,
     ).content.decode('UTF-8')
     games = json.loads(response)
     print(type(games))
     games = games['results']
+    count = 0
     for game in games:
-        if not Game.objects.filter(name=game['name']).exists():
+        try:
             image = requests.get(game['background_image'])
             img = open('1.jpg', 'wb')
             img.write(image.content)
-            Game.objects.create(
+            obj = Game.objects.get_or_create(
                 name=game['name'],
                 slug=game['slug'],
                 main_image=File(open('1.jpg', 'rb')),
                 price=random.randint(1000, 2000),
-                release_date=datetime.strptime("01/01/2001", "%d/%m/%Y"),
-                developer_id=5,
-                publisher_id=5,
+                release_date=game['released'],
+                developer_id=2,
+                publisher_id=2,
                 ready=False,
+                description='Здесь могла быть ваша реклама',
             )
             img.close()
-    return HttpResponse('скачалось')
+            for genre in game['genres']:
+                genre_temp = GameGenre.objects.get_or_create(name=genre['name'], slug=genre['slug'])
+                obj[0].genres.add(genre_temp[0])
+            for tag in game['tags']:
+                tag_temp = GameGenre.objects.get_or_create(name=tag['name'], slug=tag['slug'])
+                obj[0].genres.add(tag_temp[0])
+
+            for photo in games['short_screenshots']:
+                img = open('1.jpg', 'wb')
+                img.write(photo.content)
+                obj[0].images.add(img)
+                img.close()
+        except IntegrityError:
+            continue
+        count += 1
+
+    return HttpResponse(f'скачалось вот столько {count}\n. А ваша Тильда так может?')
