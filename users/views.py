@@ -115,10 +115,11 @@ class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
         """Return the object the view is displaying """
         return self.request.user
 
+
 class WishListView(CommonContextMixin, LoginRequiredMixin, ListView):
     template_name = 'users/wishlist.html'
     title = 'Список желаемого'
     success_url = reverse_lazy('users:profile')
-    model = WishItem
+    queryset = WishItem.objects.prefetch_related('game')
 
 

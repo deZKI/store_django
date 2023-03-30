@@ -1,5 +1,6 @@
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.views.generic import DetailView, TemplateView
+from django.db.models import Q
 
 from common.views import CommonContextMixin
 from games.models import Game, GameGenre, Tag, Rating
@@ -38,7 +39,20 @@ class GameView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(DetailView, self).get_context_data(*args, **kwargs)
         context['title'] = self.object.name
-        # context['']
+
+        game_id = self.object.id
+        genres = self.object.genres.only('slug')
+        tags = self.object.tags.only('slug')
+
+        genres_slug = []
+        tags_slug = []
+        for g in genres:
+            genres_slug.append(g.slug)
+        for t in tags:
+            tags_slug.append(t.slug)
+        context['related_games'] = Game.objects.filter(Q(genres__slug__in=genres_slug) | Q(tags__slug__in=tags_slug)).annotate(wish_count=Count('wish_list'),
+                                                                  average_rating=Avg('game_score__rating')).exclude(id=game_id).order_by('-wish_count')[:4]
+
         if self.request.user.is_authenticated:
             context['user_rating'] = Rating.objects.filter(user=self.request.user, game_id=self.object.id).first()
         return context

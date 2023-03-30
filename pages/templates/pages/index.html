@@ -14,12 +14,6 @@
                                         <a href="{% url 'games:game' game.slug %}">
                                             <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
                                         </a>
-                                        <div class="btn-icon-group">
-                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
-                                        </div>
-                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                           title="Quick View">Quick View</a>
                                     </figure>
                                     <div class="product-details">
                                         <h2 class="product-title">
@@ -97,14 +91,6 @@
                                             <a href="{% url 'games:game' game.slug %}">
                                                 <img src="{{ game.main_image.url }}">
                                             </a>
-                                            <div class="btn-icon-group">
-                                                    <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                            data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})">
-                                                        <i class="icon-bag"></i>
-                                                    </button>
-                                             </div>
-                                            <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                               title="Quick View">Quick View</a>
                                         </figure>
                                         <div class="product-details">
                                             <h2 class="product-title">
@@ -135,12 +121,6 @@
                                         <a href="{% url 'games:game' game.slug %}">
                                             <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
                                         </a>
-                                        <div class="btn-icon-group">
-                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
-                                        </div>
-                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                           title="Quick View">Quick View</a>
                                     </figure>
                                     <div class="product-details">
                                         <h2 class="product-title">

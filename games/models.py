@@ -108,6 +108,10 @@ class Rating(models.Model):
     rating = models.IntegerField(default=0)
     comment = models.TextField(default="")
 
+    class Meta:
+        verbose_name = 'Оценка'
+        verbose_name_plural = 'Оценки'
+
     def __str__(self):
         return f"{self.game.name}: {self.rating}"
 
@@ -124,7 +128,12 @@ class GameImage(models.Model):
 
 class WishItem(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    game = models.ForeignKey(to=Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(to=Game, related_name='wish_list',on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'список желаний'
+        verbose_name_plural = 'список желаний'
+        unique_together = ('user', 'game')
 
 
 class BasketQuerySet(models.QuerySet):
@@ -158,8 +167,12 @@ class BasketItem(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True)
     objects = BasketQuerySet.as_manager()
 
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзина'
+
     def de_json(self):
-        #добавить логику на уменьшение товара
+        # добавить логику на уменьшение товара
         self.game.quantity = self.game.quantity - self.quantity
         self.game.save()
         basket_item = {

@@ -147,7 +147,7 @@ INTERNAL_IPS = [
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
-PAGE_SIZE = 10
+PAGE_SIZE = 5
 
 # django-redis
 if DEBUG:

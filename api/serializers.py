@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from games.models import Game, BasketItem
+from games.models import Game, BasketItem, WishItem
 from users.models import User
 
 
@@ -36,3 +36,9 @@ class BasketSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_timestamp',)
 
 
+class WishSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = WishItem
+        fields = ('id', 'user', 'game')

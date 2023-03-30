@@ -1,12 +1,12 @@
 from django.urls import path, include
 from django.views.decorators.cache import cache_page
 
-from api.views import GameListAPIView, BasketModelViewSet, rate
+from api.views import GameListAPIView, BasketModelViewSet, WishModelViewSet, rate
 from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register('baskets', BasketModelViewSet)
-
+router.register('wish', WishModelViewSet)
 app_name = 'api'
 
 urlpatterns = [

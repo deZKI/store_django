@@ -234,7 +234,6 @@ function apibasket_inc_dec(basket_id, count) {
     }
 
 }
-
 function apiBasketRemove(basket_id) {
     if (getCookie('is_logged') === 'true') {
         let url = `/api/v1/baskets/${basket_id}`
@@ -257,10 +256,62 @@ function apiBasketRemove(basket_id) {
 
 }
 
-function remove_first_occurrence(str, searchstr)       {
-	var index = str.indexOf(searchstr);
-	if (index === -1) {
-		return str;
-	}
-	return str.slice(0, index) + str.slice(index + searchstr.length);
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : ''
+}
+
+function apiWistAdd(game_id) {
+    let url = '/api/v1/wish/'
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({game: game_id}),
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+    })
+        .then(response => {
+            if (response.status === 201) {
+                alert('Игра добавилась в список желаний')
+            } else {
+                alert('Не удалось добавить в список желаний, возможно, ее уже добавили ')
+            }
+        })
+}
+
+function apiWishRemove(wish_id) {
+    let url = `/api/v1/wish/${wish_id}`
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+    }).then(response => {
+            location.reload()
+        })
+}
+
+function rate(rating, game_id) {
+    let url = `/api/v1/rate/${game_id}/${rating}/`
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    }).then(rest => {
+        location.reload()
+    })
+    // rate_lig.innerHTML = ''
+}
+
+function remove_first_occurrence(str, searchstr) {
+    var index = str.indexOf(searchstr);
+    if (index === -1) {
+        return str;
+    }
+    return str.slice(0, index) + str.slice(index + searchstr.length);
 }

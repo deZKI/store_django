@@ -63,18 +63,18 @@
                     </nav>
                 </div>
                 <div class="header-right">
-                    <div class="header-search">
-                        <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-                        <form action="{% url 'api:games' %}" method="get" id="search">
-                            <div class="header-search-wrapper">
-                                <input type="search" class="form-control" name="search" id="q" placeholder="Поиск..."
-                                       required="">
-                                <button class="btn" type="submit"><i class="icon-search"></i></button>
-                            </div><!-- End .header-search-wrapper -->
-                        </form>
-                    </div>
+{#                    <div class="header-search">#}
+{#                        <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>#}
+{#                        <form action="{% url 'api:games' %}" method="get" id="search">#}
+{#                            <div class="header-search-wrapper">#}
+{#                                <input type="search" class="form-control" name="search" id="q" placeholder="Поиск..."#}
+{#                                       required="">#}
+{#                                <button class="btn" type="submit"><i class="icon-search"></i></button>#}
+{#                            </div><!-- End .header-search-wrapper -->#}
+{#                        </form>#}
+{#                    </div>#}
                 {% if user.is_authenticated %}
-                        <a href="#" class="porto-icon"><i class="icon icon-wishlist-2"></i></a>
+                        <a href="{% url 'users:wishlist' %}" class="porto-icon"><i class="icon icon-wishlist-2"></i></a>
                 {% endif %}
                             <div class="dropdown cart-dropdown">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
@@ -255,9 +255,11 @@
 
 <!-- Main JS File -->
 <script src="{% static 'assets/js/main.min.js' %}"></script>
-<script src="{% static 'assets/js/ajaxAPI.js' %}"></script>
+
+<!-- My JS Files -->
 <script src="{% static 'assets/js/cart.js' %}"></script>
-{% block js_scripts %}
-{% endblock %}
+<script src="{% static 'assets/js/search.js' %}"></script>
+<script src="{% static 'assets/js/catalog.js' %}"></script>
+
 </body>
 </html>

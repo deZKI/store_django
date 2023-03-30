@@ -123,10 +123,14 @@
                                 </div>
                             </div>
                             <div class="product-action product-all-icons">
-                                <button class="paction add-cart" onclick="apiBasketAdd.call(this, {{ object.id }})" title="Add to Cart" >
+                                <button class="paction add-cart" onclick="apiBasketAdd.call(this, {{ object.id }})"
+                                        title="Add to Cart">
                                     Добавить в корзину
                                 </button>
-                                </a>
+                                {% if user.is_authenticated %}
+                                    <button class="paction icon icon-wishlist-2"
+                                            onclick="apiWistAdd.call(this, {{ object.id }})"></button>
+                                {% endif %}
                             </div><!-- End .product-action -->
 
                             <div class="share-social">
@@ -173,9 +177,37 @@
                     </div><!-- End .tab-pane -->
                 </div><!-- End .tab-content -->
             </div><!-- End .product-single-tabs -->
-
         </div><!-- End .container -->
+        <section class="bg-black bar-bottom pt-4">
+                <div class="product-panel container mt-3">
+                    <div class="section-title">
+                        <h2 class="mt-1 mb-1 mr-5">Похожие игры</h2>
+                    </div>
 
+                    <div class="row row-sm">
+                        {% for game in related_games %}
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="product-default inner-quickview inner-icon">
+                                    <figure>
+                                        <a href="{% url 'games:game' game.slug %}">
+                                            <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="{% url 'games:game' game.slug %}">{{ game.name }}</a>
+                                        </h2>
+                                       {% include 'games/raiting.html' %}
+                                        <div class="price-box">
+                                            <span class="product-price">{{ game.price }} руб.</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div>
+                        </div>
+                        {% endfor %}
+                    </div><!-- End .row -->
+                </div>
+            </section>
 
     </main><!-- End .main -->
 {% endblock %}

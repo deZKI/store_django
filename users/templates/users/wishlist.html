@@ -5,49 +5,39 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'users:profile' %}">>Мой аккаунт</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'users:profile' %}">Мой аккаунт</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Избранное</li>
                 </ol>
             </nav>
 
             <div class="row">
                 <div class="col">
-                    <h2>Может стоит купить?</h2>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="form-row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="{{ form.first_name.id_for_label }}">Имя</label>
-                                    {{ form.first_name }}
+                    {% if object_list|length != 0 %}
+                        <h2>Может стоит купить?</h2>
+                    {% else %}
+                        <h2>Может стоит наполнить список?</h2>
+                    {% endif %}
+                    {% for game in object_list %}
+                        <div class="card bg-black">
+                            <div class="card-body row">
+                                <div class="col">
+                                    <h5 class="card-title">{{ game.game.name }}</h5>
+                                    <a href="{% url 'games:game' game.game.slug %}">
+                                        <img src="{{ game.game.main_image.url }}" style="height: 100px;width:100px"
+                                             alt="product">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <button onclick="apiBasketAdd.call(this, {{ game.game.id }})">
+                                        Добавить в корзину
+                                    </button>
+                                    <button onclick="apiWishRemove.call(this, {{ game.id }})">
+                                        Удалить из списка желаний
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="{{ form.last_name.id_for_label }}">Фамилия</label>
-                                    {{ form.last_name }}
-                                </div>
-                            </div>
                         </div>
-
-                        <div class="form-row">
-                            <div class="col-lg-6">
-                                <label class="small mb-1" for="{{ form.username.id_for_label }}">Имя
-                                    пользователя</label>
-                                {{ form.username }}
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="small mb-1" for="{{ form.email.id_for_label }}">Адрес электронной
-                                    почты</label>
-                                {{ form.email }}
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-lg-12" style="margin-top: 33px;">
-                                <input class="btn btn-info btn-block" type="submit" value="Сохранить">
-                            </div>
-                        </div>
-                    </form>
+                    {% endfor %}
                 </div><!-- End .col-lg-9 -->
                 <div class="col" style="color: #767f84;">
                     {% include 'users/baskets.html' %}

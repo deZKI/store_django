@@ -3,9 +3,9 @@
         Корзина <span class="badge badge-secondary badge-pill">{{ baskets.total_quantity }}</span>
     </h4>
     {% for basket in baskets %}
-             <div class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title" >{{ basket.game.name }}</h5>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ basket.game.name }}</h5>
             <figure class="product-image-container">
                 <div class="col">
                     <a href="{% url 'games:game' basket.game.slug %}" class="product-image">

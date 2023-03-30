@@ -12,24 +12,7 @@
             </nav>
             <div class="row">
                 <div class="col-lg-9">
-                    <nav class="toolbox">
-                        <div class="toolbox-left">
-                            <div class="toolbox-item toolbox-sort">
-                                <div class="select-custom">
-                                                                    <select name="ordering" class="form-control" form="filter">
-                                                                        <option value="name">По имени</option>
-                                                                        <option value="-average_rating">По средним оценкам, по убыванию</option>
-                                                                        <option value="average_rating">По средним оценкам, по возрастанию</option>
-                                                                        <option value="release_date">По новизне</option>
-                                                                        <option value="price" >По цене, дешевые</option>
-                                                                        <option value="-price">По цене, дорогие</option>
-                                                                    </select>
-                                                                </div><!-- End .select-custom -->
 
-                                <a href="#" class="sorter-btn" title="Set Ascending Direction"><span class="sr-only">Set Ascending Direction</span></a>
-                            </div><!-- End .toolbox-item -->
-                        </div><!-- End .toolbox-left -->
-                    </nav>
 
                     <div class="row row-sm product-ajax-grid">
                         <!-- games -->
@@ -50,7 +33,22 @@
                 <aside class="sidebar-shop col-lg-3 order-lg-first">
                     <form action="{% url 'api:games' %}" method="get" id="filter">
                         <div class="sidebar-wrapper">
-
+                            <nav class="toolbox">
+                                <div class="toolbox-left">
+                                    <div class="toolbox-item toolbox-sort">
+                                        <div class="select-custom">
+                                            <select name="ordering" class="form-control">
+                                                <option value="name">По имени</option>
+                                                <option value="-average_rating">По средним оценкам, по убыванию</option>
+                                                <option value="average_rating">По средним оценкам, по возрастанию</option>
+                                                <option value="release_date">По новизне</option>
+                                                <option value="price">По цене, по возрастанию</option>
+                                                <option value="-price">По цене, по убыванию</option>
+                                            </select>
+                                        </div><!-- End .select-custom -->
+                                    </div><!-- End .toolbox-item -->
+                                </div><!-- End .toolbox-left -->
+                            </nav>
                             <div class="widget">
                                 <h3 class="widget-title">
                                     <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true"
@@ -60,7 +58,7 @@
                                 <div class="collapse show" id="widget-body-2">
                                     <div class="widget-body">
                                         <ul class="cat-list">
-                                        {% cache 200 genres %}
+                                            {% cache 200 genres %}
                                             {% for genre in genres %}
                                                 <li>
                                                     <input type="checkbox" class="checked" name="genres"
@@ -119,7 +117,6 @@
                                     </div><!-- End .widget-body -->
                                 </div><!-- End .collapse -->
                                 <br>
-                                <button type="submit" class="btn btn-primary">Отфильтровать</button>
                             </div><!-- End .widget -->
 
 
@@ -130,9 +127,4 @@
             </div><!-- End .row -->
         </div><!-- End .container -->
     </main><!-- End .main -->
-{% endblock %}
-{% block js_scripts %}
-    <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
-
-    <script src="{% static 'assets/js/hogan-3.0.1.js' %}"></script>
 {% endblock %}
