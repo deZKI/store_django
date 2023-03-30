@@ -20,7 +20,8 @@ class GameListAPIView(ListAPIView):
     queryset = Game.objects.annotate(average_rating=Avg('game_score__rating'))
     serializer_class = GameSerializer
     pagination_class = GamePagination
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
+    search_fields = ['name']
     filterset_class = GameFilter
     ordering_fields = ['name', 'price', 'release_date', 'average_rating']
 

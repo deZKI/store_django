@@ -65,16 +65,17 @@
                 <div class="header-right">
                     <div class="header-search">
                         <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-                        <form action="#" method="get">
+                        <form action="{% url 'api:games' %}" method="get" id="search">
                             <div class="header-search-wrapper">
-                                <input type="search" class="form-control" name="q" id="q" placeholder="Поиск..."
+                                <input type="search" class="form-control" name="search" id="q" placeholder="Поиск..."
                                        required="">
                                 <button class="btn" type="submit"><i class="icon-search"></i></button>
                             </div><!-- End .header-search-wrapper -->
                         </form>
                     </div>
-
+                {% if user.is_authenticated %}
                         <a href="#" class="porto-icon"><i class="icon icon-wishlist-2"></i></a>
+                {% endif %}
                             <div class="dropdown cart-dropdown">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false" data-display="static">

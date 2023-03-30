@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth.views import LoginView, LogoutView, \
     PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetDoneView
+from django.views.generic import ListView
+
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -12,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from common.views import CommonContextMixin  # мой миксин
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm, UserSetPasswordForm, UserEmailForm
 from users.models import User, EmailVerification
-from games.models import BasketItem
+from games.models import BasketItem, WishItem
 
 
 class UserLoginView(CommonContextMixin, LoginView):
@@ -112,3 +114,11 @@ class UserProfileView(CommonContextMixin, LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         """Return the object the view is displaying """
         return self.request.user
+
+class WishListView(CommonContextMixin, LoginRequiredMixin, ListView):
+    template_name = 'users/wishlist.html'
+    title = 'Список желаемого'
+    success_url = reverse_lazy('users:profile')
+    model = WishItem
+
+

@@ -103,8 +103,8 @@ class Game(models.Model):
 
 class Rating(models.Model):
     """Модель для создания рейтинга игры. Связываем пользователя и иргу"""
-    user = models.ForeignKey(User, related_name='user_rating', on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, related_name='game_score', on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(to=User, related_name='user_rating', on_delete=models.CASCADE)
+    game = models.ForeignKey(to=Game, related_name='game_score', on_delete=models.CASCADE, db_index=True)
     rating = models.IntegerField(default=0)
     comment = models.TextField(default="")
 
@@ -120,6 +120,11 @@ class GameImage(models.Model):
         on_delete=models.CASCADE
     )
     image = models.ImageField("image", upload_to=f'games/img')
+
+
+class WishItem(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    game = models.ForeignKey(to=Game, on_delete=models.CASCADE)
 
 
 class BasketQuerySet(models.QuerySet):
@@ -151,11 +156,6 @@ class BasketItem(models.Model):
     game = models.ForeignKey(to=Game, related_name='games', on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     created_timestamp = models.DateTimeField(auto_now_add=True)
-
-    # логика такая: если из вишлиста добавят в корзину достаточно изменить один парамметр
-    # но возможно стоит создать отдельную таблицу, если захотим добавить функционала
-    in_basket = models.BooleanField(default=True)
-
     objects = BasketQuerySet.as_manager()
 
     def de_json(self):

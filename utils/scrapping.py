@@ -6,7 +6,7 @@ from django.core.files import File
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.db import IntegrityError
 
-from games.models import Game, GameGenre, Tag, Russian_system_of_age_ratings, GameImage
+from games.models import Game, GameGenre, Tag, GameImage
 
 cookies = {
     'SL_G_WPT_TO': 'ru',

@@ -2,7 +2,7 @@ from django.db.models import QuerySet
 from django.utils.safestring import mark_safe
 from image_uploader_widget.admin import ImageUploaderInline
 
-from games.models import GameGenre, Game, GameImage, Developer, Publisher, Tag, BasketItem, Rating
+from games.models import *
 
 from django.contrib import admin
 
@@ -10,7 +10,7 @@ from django.contrib import admin
 admin.AdminSite.site_header = 'Бизнес'
 
 
-class RatingAdmin(admin.TabularInline):
+class RatingTabAdmin(admin.TabularInline):
     model = Rating
     extra = 0
     fields = ['game', 'rating']
@@ -72,10 +72,15 @@ class GameAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{obj.main_image.url}" style="max-height: 150px;">')
 
 
+class WishItemTabAdmin(admin.TabularInline):
+    model = WishItem
+    fields = ['game']
+    extra = 0
 
-class BasketItemAdmin(admin.TabularInline):
+
+class BasketItemTabAdmin(admin.TabularInline):
     model = BasketItem
-    fields = ['game', 'quantity', 'in_basket', 'created_timestamp']
+    fields = ['game', 'quantity', 'created_timestamp']
     readonly_fields = ['created_timestamp']
     extra = 0
 

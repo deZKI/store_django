@@ -29,14 +29,6 @@ class GameListView(CommonContextMixin, TemplateView):
         return context
 
 
-class ModalGameView(DetailView):
-    """Класс для ajax получение quickview по игры"""
-    template_name = 'games/product-quick-view.html'
-    slug_url_kwarg = 'game_slug'
-    queryset = Game.objects.select_related('developer', 'publisher'). \
-        prefetch_related('images').annotate(average_rating=Avg('game_score__rating'))
-
-
 class GameView(DetailView):
     """Для отображения информации об определенной игре"""
     template_name = 'games/game.html'

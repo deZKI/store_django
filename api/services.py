@@ -22,6 +22,7 @@ class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
 
 
 class GameFilter(filters.FilterSet):
+    name = CharFilterInFilter(field_name='name', lookup_expr='in')
     genres = CharFilterInFilter(field_name='genres__slug', lookup_expr='in')
     tags = CharFilterInFilter(field_name='tags__slug', lookup_expr='in')
     price = filters.NumberFilter(field_name='price', lookup_expr='lte')

@@ -1,4 +1,5 @@
 const ajax_filter = document.querySelector('form[id=filter]')
+const ajax_search = document.querySelector('form[id=search]')
 const slider = document.querySelector('.price-slider')
 let slider_value = document.querySelector('.filter-price-text')
 let param_form = ''
@@ -34,6 +35,22 @@ function ajaxPagination(press_value) {
 }
 
 ajax_filter.addEventListener('submit', function (e) {
+    // Получаем данные из формы
+    e.preventDefault()
+    let url = this.action
+    params = new URLSearchParams(new FormData(this))
+    param_form = ''
+
+    let keys = new Set(params.keys())
+    for (const key of keys) {
+        param_form = key + '=' + params.getAll(key).join(',') + '&' + param_form
+    }
+    url = `${url}?${param_form}`
+    history.pushState(null, null, `?${param_form}`)
+    ajaxCatalog(url)
+});
+
+ajax_search.addEventListener('submit', function (e) {
     // Получаем данные из формы
     e.preventDefault()
     let url = this.action

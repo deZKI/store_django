@@ -5,13 +5,14 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Мой аккаунт</li>
+                    <li class="breadcrumb-item"><a href="{% url 'users:profile' %}">>Мой аккаунт</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Избранное</li>
                 </ol>
             </nav>
 
             <div class="row">
                 <div class="col">
-                    <h2>Информация об аккаунте</h2>
+                    <h2>Может стоит купить?</h2>
                     <form action="" method="post">
                         {% csrf_token %}
                         <div class="form-row">
@@ -52,19 +53,6 @@
                     {% include 'users/baskets.html' %}
                 </div>
             </div><!-- End .row -->
-               <div class="widget widget-dashboard">
-                        <h3 class="widget-title">Мой аккаунт</h3>
-
-                        <ul class="list">
-                            <li><a href="{% url 'orders:orders_list' %}">История покупок</a></li>
-
-                            <li>
-                                <a href="#">Избранное
-
-                                </a>
-                            </li>
-                        </ul>
-               </div><!-- End .widget -->
         </div><!-- End .container -->
 
     </main><!-- End .main -->
