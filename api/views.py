@@ -1,16 +1,18 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg, Sum
+from django.db.models import Avg
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import filters, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 
-from api.services import GamePagination, GameFilter
+
 from api.serializers import GameSerializer, BasketSerializer
-
+from api.services import GamePagination, GameFilter
 from games.models import Game, BasketItem, Rating
 
 
@@ -44,6 +46,10 @@ class BasketModelViewSet(ModelViewSet):
 
 @login_required
 def rate(request, game_id, rating):
+    if rating > 5:
+        rating = 5
+    elif rating < 0:
+        rating = 0
+
     Rating.objects.update_or_create(game_id=game_id, user=request.user, defaults={'rating': rating})
     return HttpResponse('')
-

@@ -119,7 +119,7 @@ class GameImage(models.Model):
         related_name="images",
         on_delete=models.CASCADE
     )
-    image = models.ImageField("image", upload_to=f'games/')
+    image = models.ImageField("image", upload_to=f'games/img')
 
 
 class BasketQuerySet(models.QuerySet):

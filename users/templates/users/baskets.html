@@ -21,8 +21,10 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item bg-light">
                 <div class="row text-center">
-                    <div class="col-lg-4">
-                        <div type="number" class="form-control">{{ basket.quantity }}
+                    <div class="col-lg-4"><div type="number" class="form-control">
+                            <button onclick="apibasket_inc_dec.call(this, {{ basket.id }}, {{ basket.quantity }} + 1)">+</button>
+                            {{ basket.quantity }}
+                            <button onclick="apibasket_inc_dec.call(this, {{ basket.id }}, {{ basket.quantity }} -1)">-</button>
                         </div>
                     </div>
                     <div class="col-lg-4 ">{{ basket.sum }}руб.</div>
@@ -40,7 +42,7 @@
     {% endfor %}
     <div class="card mb-3">
         <div class="card-footer">
-            <p class="float-left">Итого</p>
+            <p class="float-left">Итог</p>
             <h4 class="float-right">{{ baskets.total_sum }}руб.</h4>
         </div>
     </div>

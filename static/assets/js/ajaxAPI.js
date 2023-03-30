@@ -99,8 +99,6 @@ let htmlGames = '\
 \
                                             <img src="{{main_image}}" style="height: 200px;width:200px">\
                                         </a>\
-                                        <a href="/catalog/modal-game/{{slug}}" class="btn-quickview"\
-                                           title="Quick View">Quick View</a>\
                                     </figure>\
                                     <div class="product-details">\
                                         <h2 class="product-title">\

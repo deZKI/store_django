@@ -49,7 +49,7 @@ class PublisherAdmin(admin.ModelAdmin):
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'preview', 'price', 'quantity',
-                    'average_rating']
+                    'average_rating', 'ready']
     readonly_fields = ['average_rating', 'preview']
 
     fields = [('name', 'slug', 'average_rating'),

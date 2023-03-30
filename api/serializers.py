@@ -20,14 +20,14 @@ class BasketSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def create(self, validated_data):
-        data = validated_data
-        del data['quantity']
-        if BasketItem.objects.filter(**data).exists():
+        quantity = validated_data['quantity']
+        del validated_data['quantity']
+        if BasketItem.objects.filter(**validated_data).exists():
             basket = BasketItem.objects.get(**validated_data)
-            basket.quantity = basket.quantity + 1
+            basket.quantity = basket.quantity + quantity
             basket.save()
         else:
-            basket=BasketItem.objects.create(**validated_data)
+            basket = BasketItem.objects.create(**validated_data, quantity=quantity)
         return basket
 
     class Meta:

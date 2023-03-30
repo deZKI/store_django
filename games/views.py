@@ -46,6 +46,7 @@ class GameView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(DetailView, self).get_context_data(*args, **kwargs)
         context['title'] = self.object.name
+        # context['']
         if self.request.user.is_authenticated:
             context['user_rating'] = Rating.objects.filter(user=self.request.user, game_id=self.object.id).first()
         return context

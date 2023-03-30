@@ -6,7 +6,7 @@
             <div class="container">
                 <section>
                     <div class="row row-sm grid">
-                    {% cache 3 random_games %}
+                    {% cache 300 random_games %}
                         {% for game in random_games %}
                         <div class="col-sm-6 col-md-4 grid-item height-x2">
                             <div class="home-banner">
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="row row-sm">
-                        {% cache 3 wishlist %}
+                        {% cache 300 wishlist %}
                             {% for game in wishlist %}
                             <div class="col-6 col-md-3">
                                 <div class="product-default inner-quickview inner-icon">
@@ -62,12 +62,10 @@
                                         <a href="{% url 'games:game' game.slug %}">
                                             <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
                                         </a>
-                                        <div class="btn-icon-group">
-                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
-                                        </div>
-                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                           title="Quick View">Quick View</a>
+{#                                        <div class="btn-icon-group">#}
+{#                                            <button class="btn-icon btn-add-cart" data-toggle="modal"#}
+{#                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>#}
+{#                                        </div>#}
                                     </figure>
                                     <div class="product-details">
                                         <h2 class="product-title">
@@ -105,21 +103,21 @@
                                 'dots' : true,
                                 'margin' : 0
                             }">
-                            {% cache 3 games_recently_released:":3" %}
+                            {% cache 300 games_recently_released:":3" %}
                                 {% for game in games_recently_released|slice:":3" %}
                                     <div class="product-default inner-quickview inner-icon center-details">
                                         <figure>
                                             <a href="{% url 'games:game' game.slug %}">
                                                 <img src="{{ game.main_image.url }}">
                                             </a>
-                                            <div class="btn-icon-group">
-                                                    <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                            data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})">
-                                                        <i class="icon-bag"></i>
-                                                    </button>
-                                             </div>
-                                            <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                               title="Quick View">Quick View</a>
+{#                                            <div class="btn-icon-group">#}
+{#                                                    <button class="btn-icon btn-add-cart" data-toggle="modal"#}
+{#                                                            data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})">#}
+{#                                                        <i class="icon-bag"></i>#}
+{#                                                    </button>#}
+{#                                             </div>#}
+{#                                            <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"#}
+{#                                               title="Quick View">Quick View</a>#}
                                         </figure>
                                         <div class="product-details">
                                             <h2 class="product-title">
@@ -150,12 +148,12 @@
                                         <a href="{% url 'games:game' game.slug %}">
                                             <img src="{{ game.main_image.url }}" style="height: 200px;width:200px">
                                         </a>
-                                        <div class="btn-icon-group">
-                                            <button class="btn-icon btn-add-cart" data-toggle="modal"
-                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>
-                                        </div>
-                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"
-                                           title="Quick View">Quick View</a>
+{#                                        <div class="btn-icon-group">#}
+{#                                            <button class="btn-icon btn-add-cart" data-toggle="modal"#}
+{#                                                    data-target="#addCartModal" onclick="apiBasketAdd.call(this, {{ game.id }})"><i class="icon-bag "></i></button>#}
+{#                                        </div>#}
+{#                                        <a href="{% url 'games:modal_game_view' game.slug %}" class="btn-quickview"#}
+{#                                           title="Quick View">Quick View</a>#}
                                     </figure>
                                     <div class="product-details">
                                         <h2 class="product-title">

@@ -100,7 +100,9 @@
                                                         <span class="cart-product-info">
                                                         <span class="cart-product-qty">{{ basket.game.price }}руб.</span>
                                                             <br>
-                                                        <span class="cart-product-qty">кол:{{ basket.quantity }}</span>
+                                                            <button onclick="apibasket_inc_dec.call(this, {{ basket.id }}, {{ basket.quantity }} + 1)">+</button>
+                                                            <span class="cart-product-qty">кол:{{ basket.quantity }}</span>
+                                                             <button onclick="apibasket_inc_dec.call(this, {{ basket.id }}, {{ basket.quantity }} -1)">-</button>
                                                     </span>
                                                     </div><!-- End .product-details -->
 
