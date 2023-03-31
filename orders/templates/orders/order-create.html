@@ -75,6 +75,9 @@
                                             </figure>
                                             <div>
                                                 <h2 class="product-title">
+                                                    {% if basket.quantity > basket.game.quantity %}
+                                                        <h4> к сожалению игра не доступна для покупки</h4>
+                                                    {% endif %}
                                                     <a href="{{ basket.game.main_image.url }}">{{ basket.game.name }}</a>
                                                 </h2>
                                                 <h4>кол:{{ basket.quantity }}</h4>

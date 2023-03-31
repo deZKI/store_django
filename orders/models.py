@@ -32,10 +32,13 @@ class Order(models.Model):
         """Переопределение метода save"""
         if self.status != self.PAID:
             baskets = BasketItem.objects.filter(user=self.initiator)
-            self.basket_history = {
-                'purchased_items': [basket.de_json() for basket in baskets],
-                'total_sum': float(baskets.total_sum()),
-            }
+            self.basket_history['purchased_items'] = []
+            self.basket_history['total_sum'] = 0
+            for basket in baskets:
+                if basket.game.quantity > basket.quantity:
+                    continue
+                self.basket_history['purchased_items'].append(basket.de_json())
+                self.basket_history['total_sum'] += basket.sum()
             baskets.delete()
         else:
             #обработать сигнал
