@@ -35,10 +35,11 @@ class Order(models.Model):
             self.basket_history['purchased_items'] = []
             self.basket_history['total_sum'] = 0
             for basket in baskets:
-                if basket.game.quantity > basket.quantity:
+                if basket.game.quantity < basket.quantity:
                     continue
-                self.basket_history['purchased_items'].append(basket.de_json())
-                self.basket_history['total_sum'] += basket.sum()
+                else:
+                    self.basket_history['purchased_items'].append(basket.de_json())
+                    self.basket_history['total_sum'] += basket.sum()
             baskets.delete()
         else:
             #обработать сигнал
